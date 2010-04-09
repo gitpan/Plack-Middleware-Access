@@ -1,0 +1,27 @@
+---
+abstract: "don't allow to open your app depending on the remote ip and other parameters"
+author:
+  - 'Yury Zavarin <yury.zavarin@gmail.com>'
+build_requires:
+  Plack: 0
+  Test::More: 0
+configure_requires:
+  Module::Build: 0.36
+generated_by: 'Module::Build version 0.3603'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: Plack-Middleware-Access
+provides:
+  Plack::Middleware::Access:
+    file: lib/Plack/Middleware/Access.pm
+    version: v0.0.1
+requires:
+  Carp: 0
+  Module::Build: 0.2805
+  Net::IP: 0
+  Plack: 0
+resources:
+  license: http://dev.perl.org/licenses/
+version: v0.0.1

@@ -1,7 +1,9 @@
-Build.PL
 Changes
-lib/Plack/Middleware/Access.pm
-MANIFEST			This list of files
-README
-t/00main.t
+LICENSE
+MANIFEST
 META.yml
+Makefile.PL
+README
+lib/Plack/Middleware/Access.pm
+t/00_compile.t
+t/10_main.t

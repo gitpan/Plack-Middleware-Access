@@ -1,27 +1,31 @@
 ---
-abstract: "don't allow to open your app depending on the remote ip and other parameters"
+abstract: 'Restrict access depending on remote ip or other parameters'
 author:
   - 'Yury Zavarin <yury.zavarin@gmail.com>'
 build_requires:
-  Plack: 0
+  Plack::Builder: 0
+  Plack::Test: 0
   Test::More: 0
 configure_requires:
-  Module::Build: 0.36
-generated_by: 'Module::Build version 0.3603'
+  ExtUtils::MakeMaker: 6.30
+dynamic_config: 0
+generated_by: 'Dist::Zilla version 4.300024, CPAN::Meta::Converter version 2.120921'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
   version: 1.4
 name: Plack-Middleware-Access
-provides:
-  Plack::Middleware::Access:
-    file: lib/Plack/Middleware/Access.pm
-    version: v0.0.1
 requires:
   Carp: 0
-  Module::Build: 0.2805
   Net::IP: 0
-  Plack: 0
+  Plack::Middleware: 0
+  Plack::Util::Accessor: 0
+  parent: 0
+  perl: v5.10.0
+  strict: 0
+  warnings: 0
 resources:
-  license: http://dev.perl.org/licenses/
-version: v0.0.1
+  bugtracker: https://github.com/tadam/Plack-Middleware-Access/issues
+  homepage: https://github.com/tadam/Plack-Middleware-Access
+  repository: https://github.com/tadam/Plack-Middleware-Access.git
+version: 0.2

@@ -1,6 +1,6 @@
 package Plack::Middleware::Access;
 {
-  $Plack::Middleware::Access::VERSION = '0.2';
+  $Plack::Middleware::Access::VERSION = '0.3';
 }
 #ABSTRACT: Restrict access depending on remote ip or other parameters
 
@@ -88,8 +88,8 @@ sub allow {
     foreach my $rule (@{ $self->rules }) {
         my ($check, $allow) = @{$rule};
         my $result = $check->($env);
-        if (defined $result) {
-            return ($result ? $allow : !$allow);
+        if (defined $result && $result) {
+            return $allow;
         }
     }
 
@@ -99,7 +99,7 @@ sub allow {
 sub call {
     my ($self, $env) = @_;
 
-    return $self->allow($env) 
+    return $self->allow($env)
          ? $self->app->($env) : $self->deny_page->($env);
 }
 
@@ -115,7 +115,7 @@ Plack::Middleware::Access - Restrict access depending on remote ip or other para
 
 =head1 VERSION
 
-version 0.2
+version 0.3
 
 =head1 SYNOPSIS
 
@@ -147,7 +147,7 @@ It is very similar with allow/deny directives in web-servers.
 
 A reference to an array of rules. Each rule consists of directive C<allow> or
 C<deny> and their argument. Rules are checked in the order of their record to
-the first match. Code rules always match if they return a defined value. Access
+the first match. Code rules always match if they return a defined non-zero value. Access
 is granted if no rule matched.
 
 Argument for the rule is a one of four possibilites:
@@ -207,6 +207,8 @@ namespace to enable authentification for access restriction.
 =head1 ACKNOWLEDGEMENTS
 
 Jakob Voss
+
+Jesper Dalberg
 
 =head1 AUTHOR
 

@@ -1,12 +1,8 @@
 package Plack::Middleware::Access;
-{
-  $Plack::Middleware::Access::VERSION = '0.3';
-}
 #ABSTRACT: Restrict access depending on remote ip or other parameters
-
+$Plack::Middleware::Access::VERSION = '0.4';
 use strict;
 use warnings;
-use v5.10;
 
 use parent qw(Plack::Middleware);
 
@@ -19,7 +15,8 @@ sub prepare_app {
     my $self = shift;
 
     if (!ref $self->deny_page) {
-        my $msg = $self->deny_page // 'Forbidden';
+        my $msg = defined $self->deny_page ?
+                          $self->deny_page : 'Forbidden';
         $self->deny_page(sub {
             [403, [ 'Content-Type'   =>'text/plain',
                     'Content-Length' => length $msg ], [ $msg ] ];
@@ -30,7 +27,7 @@ sub prepare_app {
 
     if (!defined($self->rules)) {
         $self->rules([]);
-    } elsif( (ref($self->rules) // '') ne 'ARRAY' ) {
+    } elsif( ref($self->rules) ne 'ARRAY' ) {
         croak "rules must be an ARRAYREF";
     } elsif (@{ $self->rules } % 2 != 0) {
         croak "rules must contain an even number of params";
@@ -61,7 +58,7 @@ sub prepare_app {
                 return unless defined $host; # skip rule
                 return $host =~ qr/^(.*\.)?\Q${rule}\E$/;
             };
-        } elsif ( (ref($rule) // '') ne 'CODE' ) {
+        } elsif ( ref($rule) ne 'CODE' ) {
             my $netip = Net::IP->new($rule) or
                 die "not supported type of rule argument [$rule] or bad ip: " . Net::IP::Error();
             $check = sub {
@@ -109,13 +106,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 Plack::Middleware::Access - Restrict access depending on remote ip or other parameters
 
 =head1 VERSION
 
-version 0.3
+version 0.4
 
 =head1 SYNOPSIS
 
@@ -123,11 +122,11 @@ version 0.3
   use Plack::Builder;
 
   builder {
-    enable "Access" rules => [
+    enable "Access", rules => [
         allow => "goodhost.com",
         allow => sub { <some code that returns true, false, or undef> },
         allow => "192.168.1.5",
-        deny  => "192.168.1.0/24",
+        deny  => "192.168.1/24",
         allow => "192.0.0.10",
         deny  => "all"
     ];
@@ -209,6 +208,8 @@ namespace to enable authentification for access restriction.
 Jakob Voss
 
 Jesper Dalberg
+
+Sawyer X
 
 =head1 AUTHOR
 
